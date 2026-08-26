@@ -134,7 +134,7 @@ function AdminDashboard() {
       description: form.description.trim(),
       category: form.category,
       price,
-      cost: form.cost ? Number(form.cost) : undefined,
+      ...(form.cost ? { cost: Number(form.cost) } : {}),
       image:
         form.image.trim() ||
         "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&q=80",
