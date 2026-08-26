@@ -7,11 +7,10 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
-import lashTweezers from "@/assets/lash-tweezers.jpg";
-import podiatryNipper from "@/assets/podiatry-nipper.jpg";
-import groomingKit from "@/assets/grooming-kit.jpg";
-import barberShear from "@/assets/barber-shear.jpg";
+import { supabase } from "@/integrations/supabase/client";
+import { usePublicProducts } from "@/lib/products";
 
 export const CATEGORIES = [
   "Lash & Brow",
@@ -46,63 +45,17 @@ export type Product = {
   image: string;
 };
 
-export const SEED_PRODUCTS: Product[] = [
-  {
-    id: "seed-lash-tweezers",
-    name: "Pro-Grip Fiber Tip Lash Tweezers",
-    description:
-      "Hand-honed fiber tips for isolation and volume fanning. Anti-glare matte finish, perfectly balanced in the hand.",
-    category: "Lash & Brow",
-    price: 24,
-    cost: 7.5,
-    image: lashTweezers,
-  },
-  {
-    id: "seed-podiatry-nipper",
-    name: "Heavy-Duty Podiatry Nipper",
-    description:
-      "Forged 420 stainless with a double-spring action and precision-ground jaws for thick, resistant nails.",
-    category: "Nail & Cuticle",
-    price: 28,
-    cost: 9,
-    image: podiatryNipper,
-  },
-  {
-    id: "seed-grooming-kit",
-    name: "12-Piece Leather Travel Grooming Kit",
-    description:
-      "A complete manicure and pedicure set in a soft blush leather roll. Everything honed, cased, and travel ready.",
-    category: "Kits",
-    price: 45,
-    cost: 16,
-    image: groomingKit,
-  },
-  {
-    id: "seed-barber-shear",
-    name: "6-inch Convex Edge Barber Shear",
-    description:
-      "Mirror-polished convex blades with an adjustable tension knob for silent, effortless slice cutting.",
-    category: "Barber & Hair",
-    price: 65,
-    cost: 22,
-    image: barberShear,
-  },
-];
-
 export type CartLine = { productId: string; quantity: number };
 
-const PRODUCTS_KEY = "bb.products.v1";
 const CART_KEY = "bb.cart.v1";
 
 type StoreValue = {
   products: Product[];
+  loading: boolean;
   cart: CartLine[];
   hydrated: boolean;
   cartOpen: boolean;
   setCartOpen: (open: boolean) => void;
-  addProduct: (input: Omit<Product, "id">) => void;
-  updateProduct: (id: string, input: Omit<Product, "id">) => void;
-  deleteProduct: (id: string) => void;
   addToCart: (productId: string) => void;
   setQuantity: (productId: string, quantity: number) => void;
   removeFromCart: (productId: string) => void;
@@ -124,37 +77,38 @@ function read<T>(key: string, fallback: T): T {
 }
 
 export function StoreProvider({ children }: { children: ReactNode }) {
-  const [products, setProducts] = useState<Product[]>(SEED_PRODUCTS);
+  const { data: products = [], isLoading } = usePublicProducts();
+  const queryClient = useQueryClient();
   const [cart, setCart] = useState<CartLine[]>([]);
   const [hydrated, setHydrated] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
 
   useEffect(() => {
-    setProducts(read<Product[]>(PRODUCTS_KEY, SEED_PRODUCTS));
     setCart(read<CartLine[]>(CART_KEY, []));
     setHydrated(true);
   }, []);
 
   useEffect(() => {
-    if (hydrated) localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products));
-  }, [products, hydrated]);
-
-  useEffect(() => {
     if (hydrated) localStorage.setItem(CART_KEY, JSON.stringify(cart));
   }, [cart, hydrated]);
 
-  const addProduct = useCallback((input: Omit<Product, "id">) => {
-    setProducts((prev) => [{ ...input, id: crypto.randomUUID() }, ...prev]);
-  }, []);
+  // Live-refresh the storefront when the admin adds/edits/deletes a product.
+  useEffect(() => {
+    const channel = supabase
+      .channel("products-changes")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "products" },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ["products"] });
+        },
+      )
+      .subscribe();
 
-  const updateProduct = useCallback((id: string, input: Omit<Product, "id">) => {
-    setProducts((prev) => prev.map((p) => (p.id === id ? { ...input, id } : p)));
-  }, []);
-
-  const deleteProduct = useCallback((id: string) => {
-    setProducts((prev) => prev.filter((p) => p.id !== id));
-    setCart((prev) => prev.filter((l) => l.productId !== id));
-  }, []);
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
 
   const addToCart = useCallback((productId: string) => {
     setCart((prev) => {
@@ -195,13 +149,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const value: StoreValue = {
     products,
+    loading: isLoading,
     cart,
     hydrated,
     cartOpen,
     setCartOpen,
-    addProduct,
-    updateProduct,
-    deleteProduct,
     addToCart,
     setQuantity,
     removeFromCart,
