@@ -25,7 +25,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const { products } = useStore();
+  const { products, loading } = useStore();
 
   return (
     <div>
@@ -106,7 +106,7 @@ function Index() {
           </Link>
         </div>
         <div className="mt-12">
-          <ProductGrid products={products.slice(0, 4)} />
+          <ProductGrid products={products.slice(0, 4)} loading={loading} />
         </div>
       </section>
 

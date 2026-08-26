@@ -23,7 +23,7 @@ export const Route = createFileRoute("/shop/")({
 });
 
 function ShopIndex() {
-  const { products } = useStore();
+  const { products, loading } = useStore();
 
   return (
     <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8">
@@ -51,7 +51,7 @@ function ShopIndex() {
       </div>
 
       <div className="mt-12">
-        <ProductGrid products={products} />
+        <ProductGrid products={products} loading={loading} />
       </div>
     </div>
   );
