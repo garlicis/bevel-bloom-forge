@@ -31,7 +31,7 @@ export const Route = createFileRoute("/shop/$category")({
 
 function CategoryPage() {
   const { category } = Route.useLoaderData();
-  const { products } = useStore();
+  const { products, loading } = useStore();
   const filtered = products.filter((p) => p.category === category);
 
   return (
@@ -63,7 +63,7 @@ function CategoryPage() {
       </div>
 
       <div className="mt-12">
-        <ProductGrid products={filtered} />
+        <ProductGrid products={filtered} loading={loading} />
       </div>
     </div>
   );
