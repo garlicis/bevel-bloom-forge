@@ -125,3 +125,13 @@ export async function uploadProductImage(file: File): Promise<string> {
   if (signError || !data) throw signError ?? new Error("Could not create image URL");
   return data.signedUrl;
 }
+
+/** Non-hook storefront read, usable from route loaders (SSR-safe). */
+export async function fetchPublicProducts(): Promise<Product[]> {
+  const { data, error } = await supabase
+    .from("products")
+    .select(PUBLIC_COLUMNS)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data as Row[]).map(toProduct);
+}
