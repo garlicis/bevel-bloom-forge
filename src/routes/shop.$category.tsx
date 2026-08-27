@@ -1,15 +1,23 @@
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
 
 import { ProductGrid } from "@/components/product-grid";
+import { fetchPublicProducts } from "@/lib/products";
+import { productListJsonLd } from "@/lib/seo";
 import { CATEGORIES, CATEGORY_SLUGS, SLUG_BY_CATEGORY, useStore } from "@/lib/store";
 
 export const Route = createFileRoute("/shop/$category")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const category = CATEGORY_SLUGS[params.category];
     if (!category) throw notFound();
-    return { category };
+    let products: Awaited<ReturnType<typeof fetchPublicProducts>> = [];
+    try {
+      products = (await fetchPublicProducts()).filter((p) => p.category === category);
+    } catch {
+      products = [];
+    }
+    return { category, products };
   },
-  head: ({ loaderData }) => {
+  head: ({ params, loaderData }) => {
     if (!loaderData) {
       return {
         meta: [{ title: "Collection not found — Bevel & Bloom" }, { name: "robots", content: "noindex" }],
@@ -17,12 +25,23 @@ export const Route = createFileRoute("/shop/$category")({
     }
     const title = `${loaderData.category} — Bevel & Bloom`;
     const description = `Professional-grade ${loaderData.category.toLowerCase()} tools, precision forged in stainless steel.`;
+    const path = `/shop/${params.category}`;
     return {
       meta: [
         { title },
         { name: "description", content: description },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
+        { property: "og:url", content: path },
+      ],
+      links: [{ rel: "canonical", href: path }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(
+            productListJsonLd(loaderData.category, path, loaderData.products),
+          ),
+        },
       ],
     };
   },

@@ -1,10 +1,19 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 
 import { ProductGrid } from "@/components/product-grid";
+import { fetchPublicProducts } from "@/lib/products";
 import { CATEGORIES, SLUG_BY_CATEGORY, useStore } from "@/lib/store";
+import { productListJsonLd } from "@/lib/seo";
 
 export const Route = createFileRoute("/shop/")({
-  head: () => ({
+  loader: async () => {
+    try {
+      return { products: await fetchPublicProducts() };
+    } catch {
+      return { products: [] };
+    }
+  },
+  head: ({ loaderData }) => ({
     meta: [
       { title: "Shop All Tools — Bevel & Bloom" },
       {
@@ -16,6 +25,16 @@ export const Route = createFileRoute("/shop/")({
       {
         property: "og:description",
         content: "Precision-forged stainless steel beauty tools for salons, studios and self-care.",
+      },
+      { property: "og:url", content: "/shop" },
+    ],
+    links: [{ rel: "canonical", href: "/shop" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(
+          productListJsonLd("Shop All Tools", "/shop", loaderData?.products ?? []),
+        ),
       },
     ],
   }),
