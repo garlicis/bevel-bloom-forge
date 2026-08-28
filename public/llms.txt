@@ -1,0 +1,21 @@
+# Bevel & Bloom
+
+> Bevel & Bloom sells precision-forged stainless steel beauty tools — manicure and
+> pedicure kits, eyelash extension tweezers, professional barber shears, and
+> podiatry nippers — imported directly from steel forges in Sialkot, Pakistan.
+> Sold individually and as complete kits, for salons, studios, and at-home use.
+
+## Shop
+
+- [All products](https://project--423f3c53-eff0-4fee-bb95-e4043af7284e.lovable.app/shop): Full catalog across all categories.
+- [Lash & Brow](https://project--423f3c53-eff0-4fee-bb95-e4043af7284e.lovable.app/shop/lash-and-brow): Eyelash extension tweezers and brow tools.
+- [Nail & Cuticle](https://project--423f3c53-eff0-4fee-bb95-e4043af7284e.lovable.app/shop/nail-and-cuticle): Manicure, pedicure, and podiatry tools.
+- [Barber & Hair](https://project--423f3c53-eff0-4fee-bb95-e4043af7284e.lovable.app/shop/barber-and-hair): Professional barber shears.
+- [Complete Kits](https://project--423f3c53-eff0-4fee-bb95-e4043af7284e.lovable.app/shop/kits): Multi-piece grooming and travel kits.
+
+## Notes
+
+- Prices are in USD and subject to change — always confirm current price and
+  availability on the linked product page rather than relying on a cached figure.
+- This brand does not sell kitchenware, flatware, or crockery, despite sharing a
+  Sialkot steel-manufacturing origin with those product categories.
