@@ -135,3 +135,14 @@ export async function fetchPublicProducts(): Promise<Product[]> {
   if (error) throw error;
   return (data as Row[]).map(toProduct);
 }
+
+/** Non-hook single-product read, usable from route loaders (SSR-safe). */
+export async function fetchPublicProduct(id: string): Promise<Product | null> {
+  const { data, error } = await supabase
+    .from("products")
+    .select(PUBLIC_COLUMNS)
+    .eq("id", id)
+    .maybeSingle();
+  if (error) throw error;
+  return data ? toProduct(data as Row) : null;
+}
