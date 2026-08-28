@@ -22,16 +22,20 @@ export const CATEGORIES = [
 export type Category = (typeof CATEGORIES)[number];
 
 export const CATEGORY_SLUGS: Record<string, Category> = {
+  "lash-and-brow": "Lash & Brow",
+  "nail-and-cuticle": "Nail & Cuticle",
+  "barber-and-hair": "Barber & Hair",
+  kits: "Kits",
+  // legacy slugs kept so old links keep resolving
   "lash-brow": "Lash & Brow",
   "nail-cuticle": "Nail & Cuticle",
   "barber-hair": "Barber & Hair",
-  kits: "Kits",
 };
 
 export const SLUG_BY_CATEGORY: Record<Category, string> = {
-  "Lash & Brow": "lash-brow",
-  "Nail & Cuticle": "nail-cuticle",
-  "Barber & Hair": "barber-hair",
+  "Lash & Brow": "lash-and-brow",
+  "Nail & Cuticle": "nail-and-cuticle",
+  "Barber & Hair": "barber-and-hair",
   Kits: "kits",
 };
 
