@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -9,12 +10,14 @@ function ProductCard({ product }: { product: Product }) {
   return (
     <article className="group flex flex-col">
       <div className="relative aspect-square overflow-hidden rounded-sm bg-muted">
-        <img
-          src={product.image}
-          alt={product.name}
-          loading="lazy"
-          className="size-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-        />
+        <Link to="/product/$id" params={{ id: product.id }} aria-label={product.name}>
+          <img
+            src={product.image}
+            alt={product.name}
+            loading="lazy"
+            className="size-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          />
+        </Link>
         <div className="pointer-events-none absolute inset-x-3 bottom-3 translate-y-2 opacity-0 transition-all duration-300 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100">
           <Button
             className="w-full"
@@ -34,7 +37,11 @@ function ProductCard({ product }: { product: Product }) {
       <div className="mt-4 flex items-start justify-between gap-4">
         <div>
           <p className="eyebrow text-muted-foreground">{product.category}</p>
-          <h3 className="mt-1.5 text-sm font-medium leading-snug">{product.name}</h3>
+          <h3 className="mt-1.5 text-sm font-medium leading-snug">
+            <Link to="/product/$id" params={{ id: product.id }} className="hover:underline">
+              {product.name}
+            </Link>
+          </h3>
         </div>
         <p className="shrink-0 text-sm tabular-nums">{formatPrice(product.price)}</p>
       </div>

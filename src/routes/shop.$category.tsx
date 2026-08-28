@@ -2,7 +2,7 @@ import { Link, createFileRoute, notFound } from "@tanstack/react-router";
 
 import { ProductGrid } from "@/components/product-grid";
 import { fetchPublicProducts } from "@/lib/products";
-import { productListJsonLd } from "@/lib/seo";
+import { breadcrumbJsonLd, productListJsonLd } from "@/lib/seo";
 import { CATEGORIES, CATEGORY_SLUGS, SLUG_BY_CATEGORY, useStore } from "@/lib/store";
 
 export const Route = createFileRoute("/shop/$category")({
@@ -40,6 +40,16 @@ export const Route = createFileRoute("/shop/$category")({
           type: "application/ld+json",
           children: JSON.stringify(
             productListJsonLd(loaderData.category, path, loaderData.products),
+          ),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(
+            breadcrumbJsonLd([
+              { name: "Home", path: "/" },
+              { name: "Shop", path: "/shop" },
+              { name: loaderData.category, path },
+            ]),
           ),
         },
       ],
