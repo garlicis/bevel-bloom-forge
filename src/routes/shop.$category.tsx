@@ -42,6 +42,16 @@ export const Route = createFileRoute("/shop/$category")({
             productListJsonLd(loaderData.category, path, loaderData.products),
           ),
         },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(
+            breadcrumbJsonLd([
+              { name: "Home", path: "/" },
+              { name: "Shop", path: "/shop" },
+              { name: loaderData.category, path },
+            ]),
+          ),
+        },
       ],
     };
   },
