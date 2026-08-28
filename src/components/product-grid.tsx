@@ -37,7 +37,11 @@ function ProductCard({ product }: { product: Product }) {
       <div className="mt-4 flex items-start justify-between gap-4">
         <div>
           <p className="eyebrow text-muted-foreground">{product.category}</p>
-          <h3 className="mt-1.5 text-sm font-medium leading-snug">{product.name}</h3>
+          <h3 className="mt-1.5 text-sm font-medium leading-snug">
+            <Link to="/product/$id" params={{ id: product.id }} className="hover:underline">
+              {product.name}
+            </Link>
+          </h3>
         </div>
         <p className="shrink-0 text-sm tabular-nums">{formatPrice(product.price)}</p>
       </div>
