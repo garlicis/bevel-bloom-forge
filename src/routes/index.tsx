@@ -19,7 +19,9 @@ export const Route = createFileRoute("/")({
         property: "og:description",
         content: "Professional-grade stainless steel tools for salons, studios, and self-care.",
       },
+      { property: "og:url", content: "/" },
     ],
+    links: [{ rel: "canonical", href: "/" }],
   }),
   component: Index,
 });
