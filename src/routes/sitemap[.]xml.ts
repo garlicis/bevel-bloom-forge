@@ -23,6 +23,19 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/shop/kits", changefreq: "weekly", priority: "0.8" },
         ];
 
+        try {
+          const { fetchPublicProducts } = await import("@/lib/products");
+          for (const product of await fetchPublicProducts()) {
+            entries.push({
+              path: `/product/${product.id}`,
+              changefreq: "weekly",
+              priority: "0.7",
+            });
+          }
+        } catch {
+          // products unavailable — serve static routes only
+        }
+
         const urls = entries.map((e) =>
           [
             `  <url>`,
