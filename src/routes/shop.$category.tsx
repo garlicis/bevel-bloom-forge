@@ -3,7 +3,7 @@ import { Link, createFileRoute, notFound } from "@tanstack/react-router";
 import { ProductGrid } from "@/components/product-grid";
 import { fetchPublicProducts } from "@/lib/products";
 import { breadcrumbJsonLd, productListJsonLd } from "@/lib/seo";
-import { CATEGORIES, CATEGORY_SLUGS, SLUG_BY_CATEGORY, useStore } from "@/lib/store";
+import { CATEGORIES, CATEGORY_SLUGS, SLUG_BY_CATEGORY, useStore, type Category } from "@/lib/store";
 
 export const Route = createFileRoute("/shop/$category")({
   loader: async ({ params }) => {
