@@ -94,6 +94,22 @@ function Index() {
               </p>
             </Link>
           ))}
+</div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-5 pb-8 sm:px-8">
+        <div className="border-t border-border/70 pt-12">
+          <h2 className="display text-3xl sm:text-4xl">
+            Forged in Sialkot, Not Just Imported From There
+          </h2>
+          <p className="mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+            Every Bevel &amp; Bloom tool begins as a single billet of 420 surgical-grade
+            stainless, forged and hand-finished in Sialkot, Pakistan — a region with
+            generations of manufacturing tradition in surgical and precision steel
+            instruments. Every tool is inspected before it ships. This isn&apos;t imported
+            for the sake of being imported — it&apos;s imported because that&apos;s genuinely
+            where tools this precise are made.
+          </p>
         </div>
       </section>
 
