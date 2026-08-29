@@ -7,9 +7,9 @@ import { useStore } from "@/lib/store";
 
 const NAV = [
   { label: "Shop All", to: "/shop" as const, params: undefined },
-  { label: "Manicure / Pedicure", to: "/shop/$category" as const, params: { category: "nail-cuticle" } },
-  { label: "Lash & Brow", to: "/shop/$category" as const, params: { category: "lash-brow" } },
-  { label: "Pro Shears", to: "/shop/$category" as const, params: { category: "barber-hair" } },
+  { label: "Manicure / Pedicure", to: "/shop/$category" as const, params: { category: "nail-and-cuticle" } },
+  { label: "Lash & Brow", to: "/shop/$category" as const, params: { category: "lash-and-brow" } },
+  { label: "Pro Shears", to: "/shop/$category" as const, params: { category: "barber-and-hair" } },
 ];
 
 export function SiteHeader() {
