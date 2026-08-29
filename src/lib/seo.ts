@@ -74,3 +74,16 @@ export function organizationJsonLd() {
       "Professional-grade stainless steel beauty tools, precision forged for salons, studios and self-care.",
   };
 }
+
+/** FAQPage schema. Pass { q, a } pairs verbatim. */
+export function FAQJsonLd(items: { q: string; a: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  };
+}
