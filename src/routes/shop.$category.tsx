@@ -25,7 +25,8 @@ export const Route = createFileRoute("/shop/$category")({
     }
     const title = `${loaderData.category} — Bevel & Bloom`;
     const description = `Professional-grade ${loaderData.category.toLowerCase()} tools, precision forged in stainless steel.`;
-    const path = `/shop/${params.category}`;
+    // Canonical always uses the current slug so legacy slugs don't duplicate pages.
+    const path = `/shop/${SLUG_BY_CATEGORY[loaderData.category]}`;
     return {
       meta: [
         { title },
