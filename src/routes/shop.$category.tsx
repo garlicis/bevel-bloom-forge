@@ -59,6 +59,16 @@ export const Route = createFileRoute("/shop/$category")({
   component: CategoryPage,
 });
 
+const CATEGORY_INTROS: Record<Category, string> = {
+  "Lash & Brow":
+    "Fiber-tip and stainless steel tweezers built for the control isolation work demands — whether you're doing volume sets or precision brow shaping.",
+  "Nail & Cuticle":
+    "Manicure, pedicure, and podiatry-grade tools forged for clean, controlled cuts — built for daily salon use, not once-a-year home kits.",
+  "Barber & Hair":
+    "Convex-edge shears honed for barbers who can feel the difference between a stamped pair and a forged one.",
+  Kits: "Complete travel and studio kits — the full tool set in one case, for professionals who need everything on hand.",
+};
+
 function CategoryPage() {
   const { category } = Route.useLoaderData();
   const { products, loading } = useStore();
@@ -68,6 +78,9 @@ function CategoryPage() {
     <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8">
       <p className="eyebrow text-muted-foreground">The Collection</p>
       <h1 className="display mt-3 text-4xl sm:text-5xl">{category}</h1>
+      <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+        {CATEGORY_INTROS[category]}
+      </p>
 
       <div className="mt-8 flex flex-wrap gap-2 border-b border-border/70 pb-8">
         <Link
