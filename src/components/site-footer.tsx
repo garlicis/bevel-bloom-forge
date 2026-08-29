@@ -36,12 +36,17 @@ export function SiteFooter() {
             </li>
           </ul>
         </div>
-        <div className="text-sm">
+<div className="text-sm">
           <p className="eyebrow text-muted-foreground">Care</p>
           <ul className="mt-4 space-y-2 text-muted-foreground">
             <li>Lifetime sharpening</li>
             <li>Autoclave safe</li>
             <li>Free US shipping over $75</li>
+            <li>
+              <Link to="/faq" className="hover:text-foreground">
+                FAQ
+              </Link>
+            </li>
             <li>
               <Link to="/admin" className="hover:text-foreground">
                 Admin
