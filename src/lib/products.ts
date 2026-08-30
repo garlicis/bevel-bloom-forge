@@ -111,8 +111,41 @@ export function useProductMutations() {
   return { createProduct, updateProduct, deleteProduct };
 }
 
-export async function uploadProductImage(file: File): Promise<string> {
-  const ext = file.name.split(".").pop() ?? "jpg";
+function supportsWebp(): boolean {
+  try {
+    return document
+      .createElement("canvas")
+      .toDataURL("image/webp")
+      .startsWith("data:image/webp");
+  } catch {
+    return false;
+  }
+}
+
+/** Compresses in the browser before upload. Library is loaded on demand so it
+ *  never lands in the storefront bundle. */
+async function compressImage(file: File): Promise<File> {
+  try {
+    const { default: imageCompression } = await import("browser-image-compression");
+    const webp = supportsWebp();
+    return await imageCompression(file, {
+      maxWidthOrHeight: 1600,
+      maxSizeMB: 0.2,
+      useWebWorker: true,
+      initialQuality: 0.82,
+      ...(webp ? { fileType: "image/webp" } : {}),
+    });
+  } catch {
+    return file;
+  }
+}
+
+export async function uploadProductImage(rawFile: File): Promise<string> {
+  const file = await compressImage(rawFile);
+  const ext = (file.type.split("/")[1] ?? rawFile.name.split(".").pop() ?? "jpg").replace(
+    "jpeg",
+    "jpg",
+  );
   const path = `${crypto.randomUUID()}.${ext}`;
   const { error } = await supabase.storage.from("product-images").upload(path, file, {
     cacheControl: "3600",

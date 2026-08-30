@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { formatPrice, useStore, type Product } from "@/lib/store";
 
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({ product, priority = false }: { product: Product; priority?: boolean }) {
   const { addToCart, setCartOpen } = useStore();
 
   return (
@@ -14,7 +14,11 @@ function ProductCard({ product }: { product: Product }) {
           <img
             src={product.image}
             alt={product.name}
-            loading="lazy"
+            width={800}
+            height={800}
+            loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : "auto"}
+            decoding={priority ? "sync" : "async"}
             className="size-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           />
         </Link>
@@ -95,8 +99,8 @@ export function ProductGrid({
 
   return (
     <div className="grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+      {products.map((product, i) => (
+        <ProductCard key={product.id} product={product} priority={i < 2} />
       ))}
     </div>
   );
