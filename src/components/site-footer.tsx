@@ -48,6 +48,26 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
+              <Link to="/shipping" className="hover:text-foreground">
+                Shipping
+              </Link>
+            </li>
+            <li>
+              <Link to="/returns" className="hover:text-foreground">
+                Returns
+              </Link>
+            </li>
+            <li>
+              <Link to="/privacy" className="hover:text-foreground">
+                Privacy
+              </Link>
+            </li>
+            <li>
+              <Link to="/terms" className="hover:text-foreground">
+                Terms
+              </Link>
+            </li>
+            <li>
               <Link to="/admin" className="hover:text-foreground">
                 Admin
               </Link>

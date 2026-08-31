@@ -30,6 +30,23 @@ export function productListJsonLd(name: string, path: string, products: Product[
   };
 }
 
+/**
+ * Shared return policy: 14-day window, return by mail. Change-of-mind returns
+ * ship at the customer's expense, but defective/incorrect items are refunded
+ * with return shipping reimbursed — schema.org can't express conditional fee
+ * logic, so this reflects the standard refund outcome; details live on /returns.
+ */
+export function merchantReturnPolicy() {
+  return {
+    "@type": "MerchantReturnPolicy",
+    applicableCountry: "US",
+    returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+    merchantReturnDays: 14,
+    returnMethod: "https://schema.org/ReturnByMail",
+    returnFees: "https://schema.org/ReturnShippingFeesReimbursed",
+  };
+}
+
 /** Product schema for a single product detail page. */
 export function productJsonLd(product: Product, url: string, image: string) {
   return {
@@ -46,6 +63,7 @@ export function productJsonLd(product: Product, url: string, image: string) {
       price: product.price.toFixed(2),
       priceCurrency: "USD",
       availability: "https://schema.org/InStock",
+      hasMerchantReturnPolicy: merchantReturnPolicy(),
     },
   };
 }
@@ -72,6 +90,7 @@ export function organizationJsonLd() {
     url: "/",
     description:
       "Professional-grade stainless steel beauty tools, precision forged for salons, studios and self-care.",
+    returnPolicy: merchantReturnPolicy(),
   };
 }
 
