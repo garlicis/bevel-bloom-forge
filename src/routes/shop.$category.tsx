@@ -1,6 +1,9 @@
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
 
+import { useQuery } from "@tanstack/react-query";
+
 import { ProductGrid } from "@/components/product-grid";
+import { fetchGuidesByCategory } from "@/lib/guides";
 import { fetchPublicProducts } from "@/lib/products";
 import { breadcrumbJsonLd, productListJsonLd } from "@/lib/seo";
 import { CATEGORIES, CATEGORY_SLUGS, SLUG_BY_CATEGORY, useStore, type Category } from "@/lib/store";
@@ -108,6 +111,43 @@ function CategoryPage() {
       <div className="mt-12">
         <ProductGrid products={filtered} loading={loading} />
       </div>
+
+      <GuidesModule category={category} />
     </div>
+  );
+}
+
+function GuidesModule({ category }: { category: Category }) {
+  const { data: guides = [] } = useQuery({
+    queryKey: ["guides", category],
+    queryFn: () => fetchGuidesByCategory(category),
+  });
+
+  if (guides.length === 0) return null;
+
+  return (
+    <section className="mt-16 border-t border-border pt-12">
+      <h2 className="display text-2xl">Guides</h2>
+      <div className="mt-6 grid gap-6 sm:grid-cols-2">
+        {guides.map((guide) => (
+          <Link
+            key={guide.id}
+            to="/guides/$slug"
+            params={{ slug: guide.slug }}
+            className="group rounded-sm border border-border bg-card p-6 shadow-soft transition-colors hover:border-foreground/30"
+          >
+            <h3 className="display text-lg leading-snug group-hover:underline">
+              {guide.title}
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              {guide.excerpt}
+            </p>
+            <span className="mt-3 inline-block text-xs font-medium uppercase tracking-wider text-primary">
+              Read guide
+            </span>
+          </Link>
+        ))}
+      </div>
+    </section>
   );
 }
