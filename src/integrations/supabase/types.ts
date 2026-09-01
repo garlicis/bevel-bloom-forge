@@ -29,6 +29,48 @@ export type Database = {
         }
         Relationships: []
       }
+      guides: {
+        Row: {
+          body: string
+          category: string
+          created_at: string
+          excerpt: string
+          faq: Json | null
+          id: string
+          is_howto: boolean
+          published: boolean
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body: string
+          category: string
+          created_at?: string
+          excerpt: string
+          faq?: Json | null
+          id?: string
+          is_howto?: boolean
+          published?: boolean
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          category?: string
+          created_at?: string
+          excerpt?: string
+          faq?: Json | null
+          id?: string
+          is_howto?: boolean
+          published?: boolean
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           category: string
