@@ -43,6 +43,11 @@ export function SiteFooter() {
             <li>Autoclave safe</li>
             <li>Free US shipping over $75</li>
             <li>
+              <Link to="/guides" className="hover:text-foreground">
+                Guides
+              </Link>
+            </li>
+            <li>
               <Link to="/faq" className="hover:text-foreground">
                 FAQ
               </Link>

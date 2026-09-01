@@ -21,7 +21,21 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/shop/nail-and-cuticle", changefreq: "weekly", priority: "0.8" },
           { path: "/shop/barber-and-hair", changefreq: "weekly", priority: "0.8" },
           { path: "/shop/kits", changefreq: "weekly", priority: "0.8" },
+          { path: "/guides", changefreq: "weekly", priority: "0.7" },
         ];
+
+        try {
+          const { fetchPublishedGuides } = await import("@/lib/guides");
+          for (const guide of await fetchPublishedGuides()) {
+            entries.push({
+              path: `/guides/${guide.slug}`,
+              changefreq: "monthly",
+              priority: "0.6",
+            });
+          }
+        } catch {
+          // guides unavailable — continue with remaining routes
+        }
 
         try {
           const { fetchPublicProducts } = await import("@/lib/products");
