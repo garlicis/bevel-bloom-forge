@@ -19,6 +19,7 @@ import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as WholesaleRouteImport } from './routes/wholesale'
 import { Route as GuidesSlugRouteImport } from './routes/guides.$slug'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
 import { Route as ShopIndexRouteImport } from './routes/shop.index'
@@ -74,6 +75,11 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WholesaleRoute = WholesaleRouteImport.update({
+  id: '/wholesale',
+  path: '/wholesale',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GuidesSlugRoute = GuidesSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -106,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/shop': typeof ShopRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/wholesale': typeof WholesaleRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/product/$id': typeof ProductIdRoute
   '/shop/$category': typeof ShopCategoryRoute
@@ -121,6 +128,7 @@ export interface FileRoutesByTo {
   '/shipping': typeof ShippingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/wholesale': typeof WholesaleRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/product/$id': typeof ProductIdRoute
   '/shop/$category': typeof ShopCategoryRoute
@@ -138,6 +146,7 @@ export interface FileRoutesById {
   '/shop': typeof ShopRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/wholesale': typeof WholesaleRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/product/$id': typeof ProductIdRoute
   '/shop/$category': typeof ShopCategoryRoute
@@ -156,6 +165,7 @@ export interface FileRouteTypes {
     | '/shop'
     | '/sitemap.xml'
     | '/terms'
+    | '/wholesale'
     | '/guides/$slug'
     | '/product/$id'
     | '/shop/$category'
@@ -171,6 +181,7 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/sitemap.xml'
     | '/terms'
+    | '/wholesale'
     | '/guides/$slug'
     | '/product/$id'
     | '/shop/$category'
@@ -187,6 +198,7 @@ export interface FileRouteTypes {
     | '/shop'
     | '/sitemap.xml'
     | '/terms'
+    | '/wholesale'
     | '/guides/$slug'
     | '/product/$id'
     | '/shop/$category'
@@ -204,6 +216,7 @@ export interface RootRouteChildren {
   ShopRoute: typeof ShopRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
+  WholesaleRoute: typeof WholesaleRoute
   ProductIdRoute: typeof ProductIdRoute
 }
 
@@ -279,6 +292,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/wholesale': {
+      id: '/wholesale'
+      path: '/wholesale'
+      fullPath: '/wholesale'
+      preLoaderRoute: typeof WholesaleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/guides/$slug': {
       id: '/guides/$slug'
       path: '/$slug'
@@ -344,6 +364,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShopRoute: ShopRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
+  WholesaleRoute: WholesaleRoute,
   ProductIdRoute: ProductIdRoute,
 }
 export const routeTree = rootRouteImport
