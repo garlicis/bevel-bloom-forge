@@ -107,6 +107,39 @@ export type Database = {
         }
         Relationships: []
       }
+      wholesale_inquiries: {
+        Row: {
+          business_name: string
+          business_type: string
+          created_at: string
+          email: string
+          id: string
+          interest: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          business_name: string
+          business_type: string
+          created_at?: string
+          email: string
+          id?: string
+          interest: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          business_name?: string
+          business_type?: string
+          created_at?: string
+          email?: string
+          id?: string
+          interest?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
