@@ -3,7 +3,7 @@ import { Link, createFileRoute, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 
 import { ProductGrid } from "@/components/product-grid";
-import { fetchGuidesByCategory } from "@/lib/guides";
+import { fetchGuidesForShopCategory } from "@/lib/guides";
 import { fetchPublicProducts } from "@/lib/products";
 import { breadcrumbJsonLd, productListJsonLd } from "@/lib/seo";
 import { CATEGORIES, CATEGORY_SLUGS, SLUG_BY_CATEGORY, useStore, type Category } from "@/lib/store";
