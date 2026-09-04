@@ -41,6 +41,34 @@ export async function fetchGuidesByCategory(category: string): Promise<Guide[]> 
   return (data ?? []) as unknown as Guide[];
 }
 
+/**
+ * Guides for a shop category page: category-matching guides plus
+ * "General" guides, most relevant (category match) first, then newest.
+ * Capped at `limit` (default 4).
+ */
+export async function fetchGuidesForShopCategory(
+  category: string,
+  limit = 4,
+): Promise<Guide[]> {
+  const { data, error } = await supabase
+    .from("guides")
+    .select(COLUMNS)
+    .eq("published", true)
+    .in("category", [category, "General"])
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  const guides = (data ?? []) as unknown as Guide[];
+  return guides
+    .sort((a, b) =>
+      a.category === b.category
+        ? 0
+        : a.category === category
+          ? -1
+          : 1,
+    )
+    .slice(0, limit);
+}
+
 /** Single published guide by slug; null when missing/unpublished. */
 export async function fetchGuideBySlug(slug: string): Promise<Guide | null> {
   const { data, error } = await supabase

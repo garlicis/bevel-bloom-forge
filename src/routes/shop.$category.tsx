@@ -119,8 +119,8 @@ function CategoryPage() {
 
 function GuidesModule({ category }: { category: Category }) {
   const { data: guides = [] } = useQuery({
-    queryKey: ["guides", category],
-    queryFn: () => fetchGuidesByCategory(category),
+    queryKey: ["guides", "shop", category],
+    queryFn: () => fetchGuidesForShopCategory(category),
   });
 
   if (guides.length === 0) return null;
