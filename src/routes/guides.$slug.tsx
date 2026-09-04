@@ -68,6 +68,43 @@ export const Route = createFileRoute("/guides/$slug")({
   component: GuidePage,
 });
 
+const LINK_RE = /\[([^\]]+)\]\(([^)]+)\)/g;
+
+/** Render [text](url) markdown-style links inside guide body text. */
+function renderWithLinks(text: string) {
+  const parts: React.ReactNode[] = [];
+  let last = 0;
+  let match: RegExpExecArray | null;
+  LINK_RE.lastIndex = 0;
+  while ((match = LINK_RE.exec(text)) !== null) {
+    if (match.index > last) parts.push(text.slice(last, match.index));
+    const label = match[1]!;
+    const href = match[2]!;
+    if (href.startsWith("/")) {
+      parts.push(
+        <Link key={match.index} to={href} className="text-primary underline underline-offset-2">
+          {label}
+        </Link>,
+      );
+    } else {
+      parts.push(
+        <a
+          key={match.index}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary underline underline-offset-2"
+        >
+          {label}
+        </a>,
+      );
+    }
+    last = match.index + match[0].length;
+  }
+  if (last < text.length) parts.push(text.slice(last));
+  return parts;
+}
+
 function GuidePage() {
   const { guide } = Route.useLoaderData();
   const paragraphs = guideParagraphs(guide.body);
@@ -123,7 +160,7 @@ function GuidePage() {
         <div className="mt-10 space-y-6">
           {paragraphs.map((p, i) => (
             <p key={i} className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-              {p}
+              {renderWithLinks(p)}
             </p>
           ))}
         </div>
