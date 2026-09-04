@@ -78,7 +78,8 @@ function renderWithLinks(text: string) {
   LINK_RE.lastIndex = 0;
   while ((match = LINK_RE.exec(text)) !== null) {
     if (match.index > last) parts.push(text.slice(last, match.index));
-    const [, label, href] = match;
+    const label = match[1]!;
+    const href = match[2]!;
     if (href.startsWith("/")) {
       parts.push(
         <Link key={match.index} to={href} className="text-primary underline underline-offset-2">
