@@ -123,7 +123,7 @@ function GuidePage() {
         <div className="mt-10 space-y-6">
           {paragraphs.map((p, i) => (
             <p key={i} className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-              {p}
+              {renderWithLinks(p)}
             </p>
           ))}
         </div>
