@@ -29,7 +29,9 @@ export const Route = createFileRoute("/guides/$slug")({
           description: guide.excerpt,
           ...(guide.is_howto
             ? {
-                step: guideParagraphs(guide.body).map((text, i) => ({
+                step: guideParagraphs(guide.body)
+                  .filter((t) => !t.startsWith("See also:"))
+                  .map((text, i) => ({
                   "@type": "HowToStep",
                   position: i + 1,
                   text,
