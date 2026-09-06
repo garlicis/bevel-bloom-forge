@@ -105,9 +105,24 @@ function renderWithLinks(text: string) {
   return parts;
 }
 
+const TERM_RE = /^(.+?)\s+—\s/;
+
+/** Anchor id for a glossary term line ("Fiber tip — ..." -> "fiber-tip"). */
+function termAnchor(text: string): string | undefined {
+  const m = text.match(TERM_RE);
+  if (!m) return undefined;
+  return m[1]!
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
 function GuidePage() {
   const { guide } = Route.useLoaderData();
-  const paragraphs = guideParagraphs(guide.body);
+  const allParagraphs = guideParagraphs(guide.body);
+  const seeAlso = allParagraphs.filter((p) => p.startsWith("See also:"));
+  const paragraphs = allParagraphs.filter((p) => !p.startsWith("See also:"));
+  const isGlossary = guide.slug === "beauty-grooming-tool-glossary";
   const categorySlug = SLUG_BY_CATEGORY[guide.category as Category];
 
   return (
@@ -146,10 +161,10 @@ function GuidePage() {
                   {split ? (
                     <>
                       <strong className="font-medium text-foreground">{split[1]}</strong>{" "}
-                      {split[2]}
+                      {renderWithLinks(split[2] ?? "")}
                     </>
                   ) : (
-                    step
+                    renderWithLinks(step)
                   )}
                 </p>
               </li>
@@ -159,12 +174,23 @@ function GuidePage() {
       ) : (
         <div className="mt-10 space-y-6">
           {paragraphs.map((p, i) => (
-            <p key={i} className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+            <p
+              key={i}
+              {...(isGlossary ? { id: termAnchor(p) } : {})}
+              className="scroll-mt-24 text-sm leading-relaxed text-muted-foreground sm:text-base"
+            >
               {renderWithLinks(p)}
             </p>
           ))}
         </div>
       )}
+
+      {seeAlso.map((p, i) => (
+        <p key={i} className="mt-8 text-sm leading-relaxed text-muted-foreground sm:text-base">
+          {renderWithLinks(p)}
+        </p>
+      ))}
+
 
       {guide.is_howto && (
         <p className="mt-8 rounded-sm border border-border bg-card p-4 text-xs leading-relaxed text-muted-foreground">
